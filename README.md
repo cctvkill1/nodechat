@@ -1,23 +1,16 @@
 nodechat
 ========
-
 核爆炸试验第一次，开始搞
 ------------
-2014-8-14 
-###
-今天我很高兴的找回了以前的github账号，已经很久没用了
-###
-下载git客户端 完全用不来 整了几个小时 折腾了半天 看了几篇教程
-###
-最后还是没有上传上去任何文件
-###
-然后尝试用svn 连接git地址 结果一次就OK了
-###
-恩 就是这样
-###
-然后上传了去年写的个node-chat 聊天
-简单的socket.io应用 node_modules文件太多太大了 就没上传 =
-将项目下载下来 跑一遍 npm 就可以了
+###2014-8-14 
+今天我很高兴的找回了以前的github账号，已经很久没用了<br />  
+下载git客户端 完全用不来 整了几个小时 折腾了半天 看了几篇教程<br />  
+最后还是没有上传上去任何文件<br />  
+然后尝试用svn 连接git地址 结果一次就OK了<br />  
+恩 就是这样<br />  
+然后上传了去年写的个node-chat 聊天<br />  
+简单的socket.io应用 node_modules文件太多太大了 就没上传 <br />  
+将项目下载下来 跑一遍 npm 就可以了<br />  
 
 大标题  
 ===================================  
@@ -46,17 +39,14 @@ nodechat
     这里你可以输入一段代码  
   
 ### 比如我们可以在多行文本框里输入一段代码,来一个Java版本的HelloWorld吧  
-    public class HelloWorld {  
-  
-      /**  
-      * @param args  
-   */  
-   public static void main(String[] args) {  
-   System.out.println("HelloWorld!");  
-  
-   }  
-  
-    }  
+		public class HelloWorld {    
+		/**  
+		* @param args  
+		*/  
+		public static void main(String[] args) {  
+		System.out.println("HelloWorld!");  		
+		}  
+		}  
 ### 链接  
 1.[点击这里你可以链接到www.google.com](http://www.google.com)<br />  
 2.[点击这里我你可以链接到我的博客](http://guoyunsky.iteye.com)<br />  
