@@ -1,0 +1,39 @@
+<%- include header %>
+<div class="container" style="padding-top:70px"> 
+<div class="row">
+      <% users.forEach(function(u, index){ %>       
+      <div class="col-sm-6 col-md-1">      
+        <div class="username"><%= u.name%></div>
+        <p class="btn disabled">隐身</p>
+        <a class="btn btn-success" href="/chat/<%= u.name%>" style="display:none">聊天</a>       
+      </div>    
+      <% })%>  
+</div>
+</div>
+<script>
+<% if(user){%>
+//接受上线消息
+socket.on('online',function(data){
+$(".username").each(function(){
+  if(data.user==$(this).text()){
+  $(this).parent().find('p').hide();
+  $(this).parent().find('a').show();
+  }
+  if(data.users.indexOf($(this).text()) != -1){
+  $(this).parent().find('p').hide();
+  $(this).parent().find('a').show();
+  }
+});  
+});
+//接受下线消息
+socket.on('offline',function(data){
+$(".username").each(function(){
+  if(data.user==$(this).text()){
+  $(this).parent().find('p').show();
+  $(this).parent().find('a').hide();
+  }
+});
+}); 
+<% }%>
+</script>
+<%- include footer %>

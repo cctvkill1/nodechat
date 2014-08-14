@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>登录</title>
+</head>
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <style>
+      *{margin:0;padding: 0;}
+      body{background: #444 url(/images/login_bg.png)}
+      .loginBox{width:460px;height:250px;padding:0 10px;border:1px solid #fff; color:#000;border-radius:8px;box-shadow:0 0 15px #222; background: #fff;font:11px/1.5em 'Microsoft YaHei' ;position: absolute;left:50%;top:50%;margin-left:-210px;margin-top:-115px;}
+      .loginBox h2{height:35px;font-size:20px;font-weight:normal;font-family:'Microsoft YaHei' ;}
+      .loginBox .left{border-right:1px solid #ccc;height:100%;padding-right: 20px; }
+     </style>
+</head>
+<body>
+  <div class="container">
+    <form id="login" action="/login" class="form-horizontal" method="post">
+      <div class="loginBox row">
+        <div class="left col-md-8">
+          <h2>登录</h2>
+          <p>
+            <input type="text"  class="form-control"  name="name"  placeholder="用户名"/>
+          </p>
+          <p>
+            <input type="password"  class="form-control"  name="password"  placeholder="密码" / />
+          </p>
+          <div class="row">
+            <div class="col-md-8 lh30">
+              <label>
+                <input type="checkbox" name="rememberme" />
+                下次自动登录
+              </label>
+            </div>
+            <div class="col-md-4">
+              <input type="submit" value=" 登录 " class="btn btn-primary"></div>
+          </div>
+        </div>
+        <div class="right col-md-4">
+          <h2>没有帐户？</h2>
+          <div>
+            <p>注册了就可以聊天了</p>
+            <p>
+              <input type="button" value=" 注册 " id="changeReg" class="btn btn-default"></p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form id="reg" action="/reg" class="form-horizontal" method="post">
+      <div class="loginBox row">
+        <div class="left col-md-8">
+          <h2>注册</h2>
+          <p>
+            <input type="text"  class="form-control"  name="name"  placeholder="用户名"/>
+          </p>
+          <p>
+            <input type="password" class="form-control" name="password"  placeholder="密码" / />
+          </p>
+          <p>
+            <input type="password" class="form-control" name="repassword" placeholder="确定密码"></p>
+          <div class="row">
+            <div class="col-md-4">
+              <input type="submit" value=" 注册 " class="btn btn-primary"></div>
+          </div>
+        </div>
+        <div class="right col-md-4">
+          <h2>已有账号？</h2>
+          <div>
+            <p>登录了就可以聊天了</p>
+            <p>
+              <input type="button" value=" 登录 " id="changeLog" class="btn btn-default"></p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!--<form class="form-signin">
+    <h2 class="form-signin-heading">Please sign in</h2>
+    <input type="text" class="input-block-level" placeholder="Email address">
+    <input type="password" class="input-block-level" placeholder="Password">
+    <label class="checkbox">
+      <input type="checkbox" value="remember-me">Remember me</label>
+    <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+  </form>
+  -->
+</div>
+
+<script>
+$("#reg").hide();
+$("#changeReg").on("click",function(){
+  $("#login").hide();
+  $("#reg").show(600);
+});
+$("#changeLog").on("click",function(){
+  $("#login").show(600);
+  $("#reg").hide();
+});
+</script>
+</body>
+</html>

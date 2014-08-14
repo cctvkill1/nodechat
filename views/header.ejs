@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>聊天啦</title>
+  <base href="http://localhost:3000/" />
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" src="js/underscore.js"></script>-->
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand hidden-sm" href="/">聊天啦</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/people">人口广场</a>
+        </li>
+            <% if(user){%>
+            <li><a href="/people/<%= user.name%>" id="myName"><%= user.name%></a></li>
+            <li id="news" style="display:none;"><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="bottom" title="test" id="msg"><i class="glyphicon glyphicon-envelope"></i></a></li>
+            <li><a href="/loginout" id="test">退出</a></li>
+            <% }%>
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+var socket = io.connect();
+var href={};
+var msg = new Audio("/voice/msg.ogg");
+socket.on('Talk',function(data){
+  msg.play();
+  href.url=data.from;
+  $("#news").show();
+  $("#msg").prop('title',"来自"+data.from+"的消息");
+  $("#msg").tooltip('show');;
+});
+$("#news").on("click",function(){
+   location.href="/chat/"+href.url;
+});
+</script>
+<% if(user){%>
+<script>
+//如果登陆，发送信息
+socket.emit('online',{user:"<%= user.name%>"});</script>
+<% }%>

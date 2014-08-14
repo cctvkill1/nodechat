@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/chat.css">
+  <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <nav class="nav  navbar-inverse ">
+    <div class="container">
+      <a class="navbar-brand" href="javascript:void(0)" id="toName" style="float:none;display:block;text-align: center;"><%= name%></a>
+    </div>
+  </nav>
+  <nav class="navbar  navbar-inverse navbar-fixed-bottom" >
+    <div class="col-md-12">
+      <div class="input-group " style="margin-top:7px;">
+        <input type="text" class="form-control" id="talk"  data-toggle="tooltip" title="发送消息不能为空" placeholder="想说点什么…"/>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" id="send">发送</button>
+        </span>
+      </div>
+    </div>
+  </nav>
+  <div class="alert alert-info alert-dismissable" style="width: 40%;margin:0 auto;" id="info">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <strong>Hi!</strong>
+    随便聊，这没和谐功能.
+  </div>
+  <div class="container-fluid" style="width: 100%;margin:20px 0 70px 0;float: left;" id="chats"></div>
+<div id="gotop"></div>
+<script>
+$(function(){
+    goTop();
+    $("#gotop").click(function(e) {
+            $('body,html').animate({scrollTop:0},500);
+    }).mouseover(function(e) {
+        $(this).css("background","url(/images/gotop.png) no-repeat 0px -65px");
+    }).mouseout(function(e) {
+        $(this).css("background","url(/images/gotop.png) no-repeat 0px 0px");
+    });
+$('#info').animate({opacity:0.4},3000,function(){$(this).remove();});
+$talk=$('#talk');
+$chats=$('#chats');
+$talk.focus();
+var msg = new Audio("/voice/msg.ogg");
+var socket = io.connect();
+var talkNew = {};
+var lasttime= new Date();
+//如果登陆，发送信息
+socket.emit('online',{user:"<%= user.name%>"});
+//接收聊天消息
+socket.on('Talk',function(data){
+if(data!=null){
+      talkNew.from=data.from;
+var str="";
+var date1 = new Date(Date.parse(data.time));  
+var date2 = new Date(Date.parse(lasttime));
+var date3 = date1.getTime()-date2.getTime();
+var minutes= parseInt(date3/ parseInt(60*1000));
+if(minutes>3&&minutes/60<=23){
+      str="<div style='width: 40px;margin: 10px auto;'><span class='badge'>"+data.time.substring(11,16)+"</span></div>";     
+  }
+   else if($chats.text().trim()==""|| minutes/60>23){ 
+      str="<div style='width: 140px;margin: 10px auto;'><span class='badge'>"+data.time+"</span></div>";       
+  }
+  str+="<div class='leftd'><div class='headerleft'><img src='"+data.header+"' alt='...' class='header'></div><div class='speech left'>"
+        +data.talk+"</div></div>";
+  $chats.append(str);
+  $('.leftd:last').addClass('bubblingleft')
+  lasttime=data.time;
+  msg.play();
+  }
+});
+//发送聊天消息
+$("#send").click(function(){
+send();
+  });
+  document.onkeydown = function(e){ 
+var ev = document.all ? window.event : e; 
+if(ev.keyCode==13) { 
+  send();
+} 
+}
+var send=function(){
+    $talk.tooltip('destroy');
+    if($talk.val().trim()!=""){ 
+      talkNew.from="<%=name%>";
+    var talk=$talk.val().replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+    socket.emit('Talk',
+      {from:"<%=user.name%>",
+      to:talkNew.from,
+      talk:talk,
+      header:'/images/bg1.png'},
+      function(info){
+        if(info.msg=="ok"){
+          var str="";
+          var date1 = new Date(Date.parse(info.time));  
+          var date2 = new Date(Date.parse(lasttime));
+          var date3 = date1.getTime()-date2.getTime();
+          var minutes= parseInt(date3/ parseInt(60*1000));
+          if(minutes>3&&minutes/60<=23){
+                str="<div style='width: 40px;margin: 10px auto;'><span class='badge'>"+info.time.substring(11,16)+"</span></div>";     
+            }
+            else if($chats.text().trim()==""||minutes/60>23){ 
+                str="<div style='width: 140px;margin: 10px auto;'><span class='badge'>"+info.time+"</span></div>";       
+            }
+        $('html, body').stop().animate({scrollTop: $(document).height()}, 300);
+        str+="<div class='rightd'><div class='headerright'><img src='"+info.header+"' alt='...' class='header'></div><div class='speech right'>"
+          +talk+"</div></div>";
+          $chats.append(str);
+          $('.rightd:last').addClass('bubblingright')
+          $talk.val("").focus();
+          lasttime=info.time;
+        }
+    });
+    }
+    else {
+    $talk.focus();
+    $talk.tooltip('show');
+    }
+  };
+  function goTop()
+{
+    $(window).scroll(function(e) {
+        if($(window).scrollTop()>100)
+            $("#gotop").fadeIn(1000);
+        else
+            $("#gotop").fadeOut(1000);
+    });
+};  
+});
+</script>
+</body>
+</html>
